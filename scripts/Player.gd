@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
-@export var speed: int = 400
+@export var speed: int = 200
 @export var GRAVITY: int = 1200
-@export var jump_speed: int = -600
+@export var jump_speed: int = -300
 
 const UP = Vector2(0,-1)
 
@@ -16,8 +16,10 @@ var jump_count: int = 0
 const max_jump = 2
 
 var can_dash: bool = false
+@onready var animated = $AnimatedSprite2D
 
 func _ready():
+	animated.play("idle")
 	pass
 
 func get_input():
@@ -28,40 +30,47 @@ func get_input():
 	
 	if jump_count == 1 and Input.is_action_just_pressed("up"):
 		velocity.y = jump_speed
-		$Sprite2D.texture = load(jump)
+		animated.play("jump")
 		jump_count = 0
 	if is_on_floor() and Input.is_action_just_pressed("up"):
 		velocity.y = jump_speed
-		$Sprite2D.texture = load(jump)
+		animated.play("jump")
 		jump_count += 1
 	if Input.is_action_just_released("up"):
-		$Sprite2D.texture = load(idle_texture)
+		animated.play("idle")
 	
 	if Input.is_action_pressed('right'):
-		$Sprite2D.texture = load(walk_right_texture)
+		animated.flip_h = false
+		animated.play("walk")
 		velocity.x += speed
 	if Input.is_action_just_released("right"):
-		$Sprite2D.texture = load(idle_texture)
+		animated.play("idle")
 
 	if Input.is_action_pressed('left'):
+		animated.flip_h = true
+		animated.play("walk")
 		velocity.x -= speed
-
+	if Input.is_action_just_released("left"):
+		animated.play("idle")
 	
 	# Dash
 	if Input.is_action_pressed('dash') and velocity.x > 0:
-		$Sprite2D.texture = load(dash_right_texture)
+		animated.flip_h = false
+		animated.play("run")
 		velocity.x += 400
 	if Input.is_action_pressed('dash') and velocity.x < 0:
+		animated.flip_h = true
+		animated.play("run")
 		velocity.x -= 400
 	if Input.is_action_just_released("dash"):
-		$Sprite2D.texture = load(idle_texture)
+		animated.play("idle")
 	
 	# Crouch
 	if Input.is_action_pressed('down'):
 		velocity.y = 500
-		$Sprite2D.texture = load(crouch_texture)
+		animated.play("hurt")
 	if Input.is_action_just_released("down"):
-		$Sprite2D.texture = load(idle_texture)
+		animated.play("idle")
 
 func _physics_process(delta):
 	velocity.y += delta * GRAVITY

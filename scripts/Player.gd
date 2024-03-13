@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var speed: int = 200
 @export var GRAVITY: int = 1200
 @export var jump_speed: int = -300
+@export var knockbackPower: int = 2500
 
 const UP = Vector2(0,-1)
 
@@ -81,3 +82,16 @@ func _physics_process(delta):
 	velocity = velocity
 
 
+
+func knockback(enemyVelocity: Vector2):
+	var knockbackDirection = (enemyVelocity - velocity).normalized() * knockbackPower
+	velocity = knockbackDirection
+	move_and_slide()
+
+
+
+
+func _on_hurt_box_area_entered(area):
+	$KnockbackSFX.play()
+	if area.name == "SlimeHitBox":
+		knockback(area.get_parent().velocity)

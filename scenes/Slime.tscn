@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://b8jk74n8q83fy"]
+
+[ext_resource type="Texture2D" uid="uid://duh3g66hv6kec" path="res://assets/NinjaAdventure/Actor/Monsters/Slime/Slime.png" id="1_o2vp3"]
+[ext_resource type="Script" path="res://scenes/Slime.gd" id="1_t1ai1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jib1"]
+atlas = ExtResource("1_o2vp3")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wf64b"]
+atlas = ExtResource("1_o2vp3")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4h6io"]
+atlas = ExtResource("1_o2vp3")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqcnx"]
+atlas = ExtResource("1_o2vp3")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_808fi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jib1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wf64b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4h6io")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqcnx")
+}],
+"loop": true,
+"name": &"idle_slime",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n1w8t"]
+size = Vector2(14, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eq763"]
+size = Vector2(16, 15)
+
+[node name="Slime" type="CharacterBody2D"]
+script = ExtResource("1_t1ai1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_808fi")
+animation = &"idle_slime"
+frame_progress = 0.705302
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_n1w8t")
+
+[node name="SlimeHitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlimeHitBox"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_eq763")

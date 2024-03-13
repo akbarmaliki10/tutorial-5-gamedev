@@ -5,3 +5,4 @@
 
 Feature added:
 - Add slime enemy that makes you knockback when you crash it, i also add SFX every time it crashes.
+- Add BGM
